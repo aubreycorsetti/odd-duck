@@ -19,7 +19,7 @@ function OddDuck(name, fileExtension = 'jpeg') {
   this.name = name;
   // this.fileExtension = fileExtension;
   this.src = `img/lab11/${name}.${fileExtension}`;
-  this.clicks = 0;
+  this.score = 0;
   this.views = 0;
   allOddDuck.push(this);
 }
@@ -73,7 +73,7 @@ function renderOddDuck() {
 }
 
 function renderResults() {
-  for (let i = 0; i < allOddDuck.length; i++){
+  for (let i = 0; i < allOddDuck.length; i++) {
 
     let li = document.createElement('li');
     li.textContent = `${allOddDuck[i].name} had ${allOddDuck[i].views} views and ${allOddDuck[i].score} votes`;
@@ -92,7 +92,7 @@ function handleClick(event) {
   for (let i = 0; i < allOddDuck.length; i++) {
     if (clickedOddDuck === allOddDuck[i].name) {
       console.log(allOddDuck[i]);
-      allOddDuck[i].clicks++;
+      allOddDuck[i].score++;
       break;
     }
   }
@@ -100,13 +100,72 @@ function handleClick(event) {
   if (howManyTimesVoted === maxNumberOfVotes) {
     myContainer.removeEventListener('click', handleClick);
     resultsBtn.className = 'clicks-allowed';
-    resultsBtn.addEventListener('click', renderResults);
+    resultsBtn.addEventListener('click', renderChart);
   }
   else {
     renderOddDuck();
   }
   console.log(allOddDuck);
 }
+
+function renderChart() {
+
+  let duckNames = [];
+  let duckViews = [];
+  let duckScore = [];
+  for (let i = 0; i < allOddDuck.length; i++) {
+    duckNames.push(allOddDuck[i].name);
+    duckViews.push(allOddDuck[i].views);
+    duckScore.push(allOddDuck[i].score);
+  }
+
+  const data = {
+    labels: duckNames,
+    datasets: [
+      {
+        label: 'Number of Views',
+        data: duckViews,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+        ],
+        borderColor: [
+          'rgb(255, 99, 132)',
+        ],
+        borderWidth: 1
+      },
+      {
+        label: 'Number of Votes',
+        data: duckScore,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+        ],
+        borderColor: [
+          'rgb(255, 99, 132)',
+        ],
+        borderWidth: 1
+      }
+    ]
+  };
+
+  const config = {
+    type: 'bar',
+    data: data,
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    },
+  };
+
+  const myChart = new CharacterData(
+    document.getElementById('myChart'),
+    config
+  );
+}
+
+
 
 myContainer.addEventListener('click', handleClick);
 
