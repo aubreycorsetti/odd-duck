@@ -14,7 +14,7 @@ let maxNumberOfVotes = 25;
 let indexArray = [];
 
 let allOddDuck = [];
-console.log(image3.src);
+// console.log(image3.src);
 
 function OddDuck(name, fileExtension = 'jpeg') {
   this.name = name;
@@ -49,20 +49,30 @@ new OddDuck('wine-glass');
 function selectRandomOddDuck() {
   return Math.floor(Math.random() * allOddDuck.length);
 }
+let previousDuckArray = [];
+// bags boots sweep
 
 function renderOddDuck() {
 
-  while (indexArray.length < 6) {
+  while (indexArray.length < 3) {
     let ranNum = selectRandomOddDuck();
-    if (!indexArray.includes(ranNum)) {
+    if ((!indexArray.includes(ranNum)) && (!previousDuckArray.includes(ranNum))) {
       indexArray.push(ranNum);
     }
   }
+
+  previousDuckArray = [];
+
   let duck1 = indexArray.shift();
   let duck2 = indexArray.shift();
   let duck3 = indexArray.shift();
 
-  // console.log(duck1, duck2, duck3);
+  previousDuckArray.push(duck1);
+  previousDuckArray.push(duck2);
+  previousDuckArray.push(duck3);
+
+  //console.log(previousDuckArray);
+  console.log(duck1, duck2, duck3);
 
   // while (duck1 === duck2 || duck1 === duck3 || duck2 === duck3) {
   //   duck3 = selectRandomOddDuck();
@@ -93,13 +103,13 @@ function handleClick(event) {
   if (event.target === myContainer) {
     alert('Please click on an image');
   }
-  console.log(event.target.alt);
+  //console.log(event.target.alt);
   howManyTimesVoted++;
   let clickedOddDuck = event.target.alt;
 
   for (let i = 0; i < allOddDuck.length; i++) {
     if (event.target.alt === allOddDuck[i].name) {
-      console.log(allOddDuck[i]);
+      //console.log(allOddDuck[i]);
       allOddDuck[i].score++;
       break;
     }
@@ -113,7 +123,7 @@ function handleClick(event) {
   else {
     renderOddDuck();
   }
-  console.log(allOddDuck);
+  //console.log(allOddDuck);
 }
 
 function renderChart() {
@@ -131,24 +141,26 @@ function renderChart() {
     labels: duckNames,
     datasets: [
       {
+        axis: 'y',
         label: 'Number of Views',
         data: duckViews,
         backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
+          'rgba(39, 245, 93, 0.2)',
         ],
         borderColor: [
-          'rgb(255, 99, 132)',
+          'rgb(39, 245, 93)',
         ],
         borderWidth: 1
       },
       {
+        axis: 'y',
         label: 'Number of Votes',
         data: duckScore,
         backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
+          'rgba(255, 167, 0, 0.2)',
         ],
         borderColor: [
-          'rgb(255, 99, 132)',
+          'rgb(255, 167, 0)',
         ],
         borderWidth: 1
       }
@@ -157,14 +169,10 @@ function renderChart() {
 
   const config = {
     type: 'bar',
-    data: data,
+    data,
     options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
-    },
+      indexAxis: 'y',
+    }
   };
 
   const myChart = new Chart(

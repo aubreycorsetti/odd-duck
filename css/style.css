@@ -1,16 +1,18 @@
 * {
   box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
 body {
   font-family: Georgia, 'Times New Roman', Times, serif;
-  background-color: cornsilk;
+  background-color: black;
   color: saddlebrown;
 }
 
 h1 {
   font-size: 5rem;
-  color: rosybrown;
+  color: darkgreen;
   line-height: .8;
   margin: 3rem 0 1rem;
   grid-column: 2/6;
@@ -24,6 +26,17 @@ main {
   grid-template-columns: 20% 20% 20% 20% 20%;
   grid-template-rows: 20% 20% 20% 400px 20%;
 }
+
+p {
+  padding: .5rem 1rem;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start: 2;
+  grid-row-end: 4;
+  color: white;
+}
+
+
 
 #siteLogo {
   padding-left: 20px;
@@ -43,7 +56,7 @@ section {
   background-color: rgba(211, 187, 176, 0.3);
   padding: 2rem;
   grid-row: 2/4;
-  grid-column: 1/6;
+  grid-column: 3/6;
   display: flex;
   justify-content: space-between;
 }
@@ -63,9 +76,14 @@ section img:hover {
   cursor: pointer;
 }
 
-div .canvas {
+#chart {
   margin: 1rem;
- 
+  grid-column-start: 2;
+  grid-column-end: 6;
+  grid-row-start: 4;
+  grid-row-end: 6;
+  line-height: 8px;
+  
 }
 
 /* -- button -- */
@@ -86,7 +104,7 @@ section+div {
 }
 
 section+div.clicks-allowed {
-  background-color: rosybrown;
+  background-color: rgb(222, 105, 22);
   color: white;
   cursor: pointer;
   pointer-events: auto;
