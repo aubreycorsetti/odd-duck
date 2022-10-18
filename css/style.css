@@ -63,10 +63,9 @@ section img:hover {
   cursor: pointer;
 }
 
-ul {
+div .canvas {
   margin: 1rem;
-  grid-column: 2/6;
-  grid-row: 4/6;
+ 
 }
 
 /* -- button -- */

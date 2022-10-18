@@ -2,7 +2,7 @@
 
 let myContainer = document.querySelector('section');
 let resultsBtn = document.querySelector('section + div');
-let results = document.querySelector('ul');
+// let results = document.querySelector('ul');
 
 let image1 = document.querySelector('section img:first-child');
 let image2 = document.querySelector('section img:nth-child(2)');
@@ -11,7 +11,8 @@ let image3 = document.querySelector('section img:nth-child(3)');
 let howManyTimesVoted = 0;
 let maxNumberOfVotes = 25;
 
-//let allOddDuck = [bag, banana, bathroom, boots, breakfast, bubblegum, chair, cthulu, dogduck, dragon, pen, petsweep, scissors, shark, sweep, tauntaun, unicorn, watercan, wineglass];
+let indexArray = [];
+
 let allOddDuck = [];
 console.log(image3.src);
 
@@ -50,16 +51,23 @@ function selectRandomOddDuck() {
 }
 
 function renderOddDuck() {
-  let duck1 = selectRandomOddDuck();
-  let duck2 = selectRandomOddDuck();
-  let duck3 = selectRandomOddDuck();
 
-  console.log(duck1, duck2, duck3);
-
-  while (duck1 === duck2 || duck1 === duck3 || duck2 === duck3) {
-    duck3 = selectRandomOddDuck();
-    duck2 = selectRandomOddDuck();
+  while (indexArray.length < 6) {
+    let ranNum = selectRandomOddDuck();
+    if (!indexArray.includes(ranNum)) {
+      indexArray.push(ranNum);
+    }
   }
+  let duck1 = indexArray.shift();
+  let duck2 = indexArray.shift();
+  let duck3 = indexArray.shift();
+
+  // console.log(duck1, duck2, duck3);
+
+  // while (duck1 === duck2 || duck1 === duck3 || duck2 === duck3) {
+  //   duck3 = selectRandomOddDuck();
+  //   duck2 = selectRandomOddDuck();
+  // }
 
   image1.src = allOddDuck[duck1].src;
   image1.alt = allOddDuck[duck1].name;
@@ -72,25 +80,25 @@ function renderOddDuck() {
   allOddDuck[duck3].views++;
 }
 
-function renderResults() {
-  for (let i = 0; i < allOddDuck.length; i++) {
+// function renderResults() {
+//   for (let i = 0; i < allOddDuck.length; i++) {
 
-    let li = document.createElement('li');
-    li.textContent = `${allOddDuck[i].name} had ${allOddDuck[i].views} views and ${allOddDuck[i].score} votes`;
-    results.appendChild(li);
-  }
-}
+//     let li = document.createElement('li');
+//     li.textContent = `${allOddDuck[i].name} had ${allOddDuck[i].views} views and ${allOddDuck[i].score} votes`;
+//     results.appendChild(li);
+//   }
+// }
 
 function handleClick(event) {
   if (event.target === myContainer) {
     alert('Please click on an image');
   }
-  console.log(event.target);
+  console.log(event.target.alt);
   howManyTimesVoted++;
   let clickedOddDuck = event.target.alt;
 
   for (let i = 0; i < allOddDuck.length; i++) {
-    if (clickedOddDuck === allOddDuck[i].name) {
+    if (event.target.alt === allOddDuck[i].name) {
       console.log(allOddDuck[i]);
       allOddDuck[i].score++;
       break;
@@ -159,7 +167,7 @@ function renderChart() {
     },
   };
 
-  const myChart = new CharacterData(
+  const myChart = new Chart(
     document.getElementById('myChart'),
     config
   );
