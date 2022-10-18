@@ -19,7 +19,7 @@ function OddDuck(name, fileExtension = 'jpeg') {
   this.name = name;
   // this.fileExtension = fileExtension;
   this.src = `img/lab11/${name}.${fileExtension}`;
-  this.score = 0;
+  this.clicks = 0;
   this.views = 0;
   allOddDuck.push(this);
 }
@@ -74,6 +74,7 @@ function renderOddDuck() {
 
 function renderResults() {
   for (let i = 0; i < allOddDuck.length; i++){
+
     let li = document.createElement('li');
     li.textContent = `${allOddDuck[i].name} had ${allOddDuck[i].views} views and ${allOddDuck[i].score} votes`;
     results.appendChild(li);
@@ -89,21 +90,22 @@ function handleClick(event) {
   let clickedOddDuck = event.target.alt;
 
   for (let i = 0; i < allOddDuck.length; i++) {
-    if (event.target.alt === allOddDuck[i].name) {
+    if (clickedOddDuck === allOddDuck[i].name) {
       console.log(allOddDuck[i]);
-      allOddDuck[i].score++;
+      allOddDuck[i].clicks++;
       break;
     }
   }
 
   if (howManyTimesVoted === maxNumberOfVotes) {
     myContainer.removeEventListener('click', handleClick);
-    resultsBtn.className = 'clicks allowed';
+    resultsBtn.className = 'clicks-allowed';
     resultsBtn.addEventListener('click', renderResults);
   }
   else {
     renderOddDuck();
   }
+  console.log(allOddDuck);
 }
 
 myContainer.addEventListener('click', handleClick);
