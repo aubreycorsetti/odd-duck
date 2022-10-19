@@ -1,8 +1,9 @@
 'use strict';
 
+// Global Values
+
 let myContainer = document.querySelector('section');
 let resultsBtn = document.querySelector('section + div');
-// let results = document.querySelector('ul');
 
 let image1 = document.querySelector('section img:first-child');
 let image2 = document.querySelector('section img:nth-child(2)');
@@ -12,45 +13,47 @@ let howManyTimesVoted = 0;
 let maxNumberOfVotes = 25;
 
 let indexArray = [];
-
 let allOddDuck = [];
-// console.log(image3.src);
 
-function OddDuck(name, fileExtension = 'jpeg') {
+
+// Constructor
+
+function OddDuck(name, fileExtension = 'jpeg', score = 0, views = 0) {
   this.name = name;
-  // this.fileExtension = fileExtension;
+  this.fileExtension = fileExtension;
   this.src = `img/lab11/${name}.${fileExtension}`;
-  this.score = 0;
-  this.views = 0;
+  this.score = score;
+  this.views = views;
   allOddDuck.push(this);
 }
 
-new OddDuck('bag');
-new OddDuck('banana');
-new OddDuck('boots');
-new OddDuck('boots');
-new OddDuck('breakfast');
-new OddDuck('bubblegum');
-new OddDuck('chair');
-new OddDuck('cthulhu');
-new OddDuck('dog-duck');
-new OddDuck('dragon');
-new OddDuck('pen');
-new OddDuck('pet-sweep');
-new OddDuck('scissors');
-new OddDuck('shark');
-new OddDuck('sweep', 'png');
-new OddDuck('tauntaun');
-new OddDuck('unicorn');
-new OddDuck('water-can');
-new OddDuck('wine-glass');
+// new OddDuck('bag');
+// new OddDuck('banana');
+// new OddDuck('boots');
+// new OddDuck('boots');
+// new OddDuck('breakfast');
+// new OddDuck('bubblegum');
+// new OddDuck('chair');
+// new OddDuck('cthulhu');
+// new OddDuck('dog-duck');
+// new OddDuck('dragon');
+// new OddDuck('pen');
+// new OddDuck('pet-sweep');
+// new OddDuck('scissors');
+// new OddDuck('shark');
+// new OddDuck('sweep', 'png');
+// new OddDuck('tauntaun');
+// new OddDuck('unicorn');
+// new OddDuck('water-can');
+// new OddDuck('wine-glass');
 
+// Functions
 
 function selectRandomOddDuck() {
   return Math.floor(Math.random() * allOddDuck.length);
 }
 let previousDuckArray = [];
-// bags boots sweep
+
 
 function renderOddDuck() {
 
@@ -71,13 +74,8 @@ function renderOddDuck() {
   previousDuckArray.push(duck2);
   previousDuckArray.push(duck3);
 
-  //console.log(previousDuckArray);
   console.log(duck1, duck2, duck3);
 
-  // while (duck1 === duck2 || duck1 === duck3 || duck2 === duck3) {
-  //   duck3 = selectRandomOddDuck();
-  //   duck2 = selectRandomOddDuck();
-  // }
 
   image1.src = allOddDuck[duck1].src;
   image1.alt = allOddDuck[duck1].name;
@@ -90,14 +88,53 @@ function renderOddDuck() {
   allOddDuck[duck3].views++;
 }
 
-// function renderResults() {
-//   for (let i = 0; i < allOddDuck.length; i++) {
+// Storing data locally
 
-//     let li = document.createElement('li');
-//     li.textContent = `${allOddDuck[i].name} had ${allOddDuck[i].views} views and ${allOddDuck[i].score} votes`;
-//     results.appendChild(li);
-//   }
-// }
+function storeOddDuck() {
+  let stringifiedOddDuck = JSON.stringify(allOddDuck);
+  localStorage.setItem('allOddDuck', stringifiedOddDuck);
+
+}
+
+function getOddDuck() {
+  let storeOddDuck = localStorage.getItem('allOddDuck');
+
+  if (storeOddDuck) {
+    let parseOddDuck = JSON.parse(storeOddDuck);
+    console.log(parseOddDuck);
+
+    for (let allOddDuck of parseOddDuck) {
+      let name = allOddDuck.name;
+      let fileExtension = allOddDuck.fileExtension;
+      let score = allOddDuck.score;
+      let views = allOddDuck.views;
+      new OddDuck(name, fileExtension, score, views);
+    }
+  }
+  else {
+    new OddDuck('bag');
+    new OddDuck('banana');
+    new OddDuck('boots');
+    new OddDuck('boots');
+    new OddDuck('breakfast');
+    new OddDuck('bubblegum');
+    new OddDuck('chair');
+    new OddDuck('cthulhu');
+    new OddDuck('dog-duck');
+    new OddDuck('dragon');
+    new OddDuck('pen');
+    new OddDuck('pet-sweep');
+    new OddDuck('scissors');
+    new OddDuck('shark');
+    new OddDuck('sweep', 'png');
+    new OddDuck('tauntaun');
+    new OddDuck('unicorn');
+    new OddDuck('water-can');
+    new OddDuck('wine-glass');
+  }
+}
+
+// Event Handler
 
 function handleClick(event) {
   if (event.target === myContainer) {
@@ -119,6 +156,7 @@ function handleClick(event) {
     myContainer.removeEventListener('click', handleClick);
     resultsBtn.className = 'clicks-allowed';
     resultsBtn.addEventListener('click', renderChart);
+    storeOddDuck();
   }
   else {
     renderOddDuck();
@@ -181,8 +219,10 @@ function renderChart() {
   );
 }
 
+getOddDuck();
+renderOddDuck();
 
+// Event Listener
 
 myContainer.addEventListener('click', handleClick);
 
-renderOddDuck();
